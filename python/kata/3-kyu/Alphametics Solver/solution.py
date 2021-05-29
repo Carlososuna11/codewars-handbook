@@ -15,7 +15,7 @@ def alphametics(puzzle):
         if (idx==len(unique)):
             intlist = []
             for word in words:
-                num = ""
+                num = ''
                 for letter in word:
                     num+=str(letters_dict.get(letter,''))
                 intlist.append(int(num))
@@ -24,9 +24,8 @@ def alphametics(puzzle):
                     puzzle = puzzle.replace(key,f"{letters_dict[key]}")
                 return puzzle
         else:
-            
             ch = unique[idx]
-            for i in range(10):
+            for i in [0,1,2,3,4,5,9,8,7,6]:
                 if i == 0:
                     if ch in valid:
                         continue
