@@ -1,4 +1,4 @@
-def alphametics(puzzle):
+def alphametics(puzzle:str)->str:
     words = puzzle.strip().replace(' ','').replace('=',',').replace('+',',').split(',')
     letters_dict = {}
     unique = ''
@@ -25,6 +25,8 @@ def alphametics(puzzle):
                 return puzzle
         else:
             ch = unique[idx]
+            # a = [x for x in range(10) if usedNumbers[x]==False]
+            # a = a[:len(a)//2] + a[len(a)//2:][::-1]
             for i in [0,1,2,3,4,5,9,8,7,6]:
                 if i == 0:
                     if ch in valid:
