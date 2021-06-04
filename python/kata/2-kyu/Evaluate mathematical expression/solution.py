@@ -1,7 +1,4 @@
-import re
-#my code
 def calc(expression):
-    print(expression)
     expression = expression.replace('-',' - ').replace('+',' + ').replace('*',' * ').replace('/',' / ').replace('(',' ( ').replace(')',' ) ').replace('  ',' ').replace('  ',' ').strip().replace(" ",',').split(',')
     convert = {
         '+':'-',
@@ -18,106 +15,82 @@ def calc(expression):
             a.append('-1')
             a.append('*')
         elif value == '-' and index>0 and expression[index-1] in ['/']:
-            expression[index+1] = f'-{expression[index+1]}'
+            a = a[:-1] + ['*', '-1', '/']
         else:
             a.append(value)
     a = ' '.join(a)
     return Calculator().evaluate(a)
 
 
-#for this kata, I used the solution from https://www.codewars.com/users/jeff1997 of 
-# the problem of 'Calculator' https://www.codewars.com/kata/5235c913397cbf2508000048/python 
-# which I had already done, just that I noticed that my code passed the test but has an error 
-# with the subtraction, so while I refactor my code, I used this person's code
-#  | 
-#  |
-#  |
-#  |
-#\   /
-# \/
 class Calculator(object):
-    def fuundation_op(self, op, num1, num2):
-        if op == '+':
-            return num1 + num2
-        elif op == '-':
-            return num1 - num2
-        elif op == '*':
-            return num1 * num2
-        elif op == '/':
-            return num1 / num2
+    operations = {
+            '+':lambda x,y:x+y,
+            '-':lambda x,y:x-y,
+            '*':lambda x,y:x*y,
+            '/': lambda x,y: x/y,
+        }
 
-    def priority_level(self, op):
-        if op == '+' or op == '-':
-            return 1
-        elif op == '*' or op == '/':
-            return 2
-        else:
-            return 0
+    def evaluate(self, string):
+        calc = string.split(' ')
+        divide_multiply = string.count('*') + string.count('/')
+        if divide_multiply>0:
+            count = 0
+            while count < divide_multiply:
+                istart = []  # stack of indices of opening parentheses
+                b = {}
+                for i, c in enumerate(calc):
+                    if c == '(':
+                        istart.append(i)
+                    if c == ')':
+                        b[istart.pop()] = i
+                auxcont = 0
+                for index,i in enumerate(calc):
+                    if i in ['/','*']:
+                        if count == auxcont:
+                            if calc[index+1]=='(':
+                                pos = b[index+1]
+                                calc = calc[:pos+1] + [')'] + calc[pos+1:]
+                            else:
+                                calc = calc[:index+2] + [')'] + calc[index+2:]
+                            if index == 1:
+                                calc = ['(']+calc
+                            else:
+                                if calc[index-1]==')':
+                                    pos =list(b.keys())[list(b.values()).index(index-1)]
+                                    calc = calc[:pos] + ['('] + calc[pos:]
+                                else:
+                                    calc = calc[:index-1] + ['('] + calc[index-1:]
+                            break
+                        auxcont+=1
+                count+=1
+        return self.calculate(calc[::-1])
 
-    def get_infix_lst(self, strng):
-        strng = strng.replace(' ', '')
-        # consider whether '-' represents the minus or the operator
-        minus_lst = [i for i in re.split(r'(\-\d+\.{0,1}\d*)', strng) if i]
-        result = []
-        for item in minus_lst:
-            if len(result) == 0 and re.search(r'^\-\d+\.{0,1}\d*$', item):
-                result.append(item)
-                continue
-            if len(result) > 0:
-                if re.search(r'[\+\-\*\/\(]$', result[-1]):
-                    result.append(item)
-                    continue
-            item_split = [i for i in re.split(r'([\+\-\*\/\(\)])', item) if i]
-            result += item_split
-        if result[0] == '-':
-            result.insert(0, '0')
-        return result
-
-    def solve_opreration(self, item, stack1, stack2):
-        if len(stack2) == 0:
-            stack2.append(item)
-        elif stack2[-1] == '(':
-            stack2.append(item)
-        else:
-            a = self.priority_level(item)
-            b = self.priority_level(stack2[-1])
-            if self.priority_level(item) > self.priority_level(stack2[-1]):
-                stack2.append(item)
+    def calculate(self,calc):
+        istart = []  # stack of indices of opening parentheses
+        b = {}
+        for i, c in enumerate(calc):
+            if c == ')':
+                istart.append(i)
+            if c == '(':
+                b[istart.pop()] = i
+        if calc[0] == ')':
+            index_final = b[0]
+            value = self.calculate(calc[1:index_final])
+            calc = calc[index_final+1:]
+            if len(calc) == 0:
+                return value
             else:
-                stack1.append(stack2[-1])
-                stack2.pop()
-                self.solve_opreration(item, stack1, stack2)
-
-    def to_reverse_polish_notation(self, strng):
-        infix = self.get_infix_lst(strng)
-        stack1 = []
-        stack2 = []
-        for i, item in enumerate(infix):
-            if item in ['+', '-', '*', '/']:
-                self.solve_opreration(item, stack1, stack2)
-            elif item == '(':
-                stack2.append(item)
-            elif item == ')':
-                if len(stack2) > 0 and '(' in stack2:
-                    while stack2[-1] != '(':
-                        stack1.append(stack2[-1])
-                        stack2.pop()
-                    stack2.pop()
-            elif re.search(r'^\-?\d+\.?\d*$', item):
-                stack1.append(item)
-        while len(stack2) > 0:
-            stack1.append(stack2[-1])
-            stack2.pop()
-        return stack1
-
-    def evaluate(self, strng):
-        reverse_polish_notation = self.to_reverse_polish_notation(strng)
-        result = []
-        for item in reverse_polish_notation:
-            if item in ['+', '-', '*', '/']:
-                num2 = result.pop()
-                num1 = result.pop()
-                result.append(self.fuundation_op(item, num1, num2))
+                return self.calculate(calc[:])(value)
+        elif calc[0] in self.operations:    
+            return lambda x: self.operations[calc[0]](self.calculate(calc[1:]),x)
+        else:
+            value = calc[0]
+            calc = calc[1:]
+            if '.' in value:
+                if len(calc) == 0:
+                    return float(value)
+                return self.calculate(calc)(float(value))
             else:
-                result.append(float(item))
-        return result[0]
+                if len(calc) == 0:
+                    return int(value)
+                return self.calculate(calc)(int(value))

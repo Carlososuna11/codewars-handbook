@@ -8,8 +8,8 @@ class Calculator(object):
 
     def evaluate(self, string):
         calc = string.split(' ')
-        
-        divide_multiply = string.count('*') + string.count('/') + string.count('-')
+        print(string)
+        divide_multiply = string.count('*') + string.count('/')
         if divide_multiply>0:
             count = 0
             while count < divide_multiply:
@@ -22,7 +22,7 @@ class Calculator(object):
                         b[istart.pop()] = i
                 auxcont = 0
                 for index,i in enumerate(calc):
-                    if i in ['/','*','-']:
+                    if i in ['/','*']:
                         if count == auxcont:
                             if calc[index+1]=='(':
                                 pos = b[index+1]
@@ -40,17 +40,17 @@ class Calculator(object):
                             break
                         auxcont+=1
                 count+=1
-        return self.calculate(calc)
+        return self.calculate(calc[::-1])
 
     def calculate(self,calc):
         istart = []  # stack of indices of opening parentheses
         b = {}
         for i, c in enumerate(calc):
-            if c == '(':
-                istart.append(i)
             if c == ')':
+                istart.append(i)
+            if c == '(':
                 b[istart.pop()] = i
-        if calc[0] == '(':
+        if calc[0] == ')':
             index_final = b[0]
             value = self.calculate(calc[1:index_final])
             calc = calc[index_final+1:]
@@ -59,7 +59,7 @@ class Calculator(object):
             else:
                 return self.calculate(calc[:])(value)
         elif calc[0] in self.operations:    
-            return lambda x: self.operations[calc[0]](x,self.calculate(calc[1:]))
+            return lambda x: self.operations[calc[0]](self.calculate(calc[1:]),x)
         else:
             value = calc[0]
             calc = calc[1:]
