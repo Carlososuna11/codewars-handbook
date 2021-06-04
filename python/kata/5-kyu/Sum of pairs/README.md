@@ -1,4 +1,4 @@
-# [Sum of pairs](https://www.codewars.com/kata/54d81488b981293527000c8f)
+# [Codewars Sum of pairs](https://www.codewars.com/kata/54d81488b981293527000c8f)
 
 ### Details
 #### Sum of Pairs

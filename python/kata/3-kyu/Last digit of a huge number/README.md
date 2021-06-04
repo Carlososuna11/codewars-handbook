@@ -1,4 +1,4 @@
-# [Last digit of a huge number](https://www.codewars.com/kata/5518a860a73e708c0a000027)
+# [Codewars Last digit of a huge number](https://www.codewars.com/kata/5518a860a73e708c0a000027)
 
 ### Details
 For a given list `[x1, x2, x3, ..., xn]` compute the last (decimal) digit of `x1 ^ (x2 ^ (x3 ^ (... ^ xn)))`.

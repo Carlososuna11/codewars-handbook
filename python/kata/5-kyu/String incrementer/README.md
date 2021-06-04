@@ -1,4 +1,4 @@
-# [String incrementer](https://www.codewars.com/kata/54a91a4883a7de5d7800009c)
+# [Codewars String incrementer](https://www.codewars.com/kata/54a91a4883a7de5d7800009c)
 
 ### Details
 Your job is to write a function which increments a string, to create a new string.

@@ -1,4 +1,4 @@
-# [Pete, the baker](https://www.codewars.com/kata/525c65e51bf619685c000059)
+# [Codewars Pete, the baker](https://www.codewars.com/kata/525c65e51bf619685c000059)
 
 ### Details
 Pete likes to bake some cakes. He has some recipes and ingredients. Unfortunately he is not good in maths. Can you help him to find out, how many cakes he could bake considering his recipes?

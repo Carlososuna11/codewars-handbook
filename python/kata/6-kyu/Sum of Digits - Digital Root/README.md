@@ -1,4 +1,4 @@
-# [Sum of Digits / Digital Root](https://www.codewars.com/kata/541c8630095125aba6000c00)
+# [Codewars Sum of Digits / Digital Root](https://www.codewars.com/kata/541c8630095125aba6000c00)
 
 ### Details
 [Digital root](https://en.wikipedia.org/wiki/Digital_root) is the recursive sum of all the digits in a number.
