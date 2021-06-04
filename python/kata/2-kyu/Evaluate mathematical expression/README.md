@@ -1,4 +1,4 @@
-# [Evaluate mathematical expression](https://www.codewars.com/kata/52a78825cdfc2cfc87000005)
+# [Codewars Evaluate mathematical expression](https://www.codewars.com/kata/52a78825cdfc2cfc87000005)
 
 ### Details
 Given a mathematical expression as a string you must return the result as a number.
