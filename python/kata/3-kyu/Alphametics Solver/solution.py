@@ -1,3 +1,4 @@
+
 def alphametics(puzzle:str)->str:
     words = puzzle.strip().replace(' ','').replace('=',',').replace('+',',').split(',')
     letters_dict = {}
