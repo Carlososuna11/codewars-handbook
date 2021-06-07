@@ -1,4 +1,4 @@
-# [Codewars Multiply](https://www.codewars.com/kata/60b775debec5c40055657733)
+# [Codewars Bugs with late binding closure](https://www.codewars.com/kata/60b775debec5c40055657733)
 
 ### Details
 You have a function that takes an integer `n` and returns a list of length `n` of function objects that take an integer `x` and return `x` multiplied by the index of that object in this list(remember that in python the indexes of elements start from 0):
